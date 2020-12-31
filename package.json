@@ -1,5 +1,5 @@
 {
-  "name": "stega-card",
+  "name": "stega-carder",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "pako": "^2.0.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",

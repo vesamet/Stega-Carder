@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
@@ -23,8 +21,10 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    
   ],
-
+  sass: {
+  },
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
   ],
@@ -46,16 +46,19 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      options: {
+        customProperties: true,
+      },
+      dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+        light: {
+          primary: "#3f51b5",
+          secondary: "#673ab7",
+          accent: "#9c27b0",
+          error: "#e91e63",
+          warning: "#ff5722",
+          info: "#607d8b",
+          success: "#8bc34a"
         }
       }
     }
@@ -63,5 +66,11 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+  },
+  generate: {
+    dir: 'docs',
+  },
+  router: {
+    base: '/Stega-Carder/'
   }
 }

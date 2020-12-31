@@ -1,89 +1,80 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
+    <v-col class="main-col text-center">
+      <v-card class="py-6 px-9">
+        <h1 class="main-title">Stega Carder</h1>
+        <p>
+          A tool to encode any text into an cartridge-like image using
+          <a href="https://en.wikipedia.org/wiki/Steganography" rel="noopener"
+            >steganography</a
+          >.<br />
+        </p>
+        <img src="~/assets/img/deconstructed.svg" class="welcome-image" />
+        <v-tooltip left color="white" content-class="about-tooltip">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="accent"
+              fab
+              small
+              absolute
+              top
+              right
+              v-bind="attrs"
+              v-on="on"
             >
-              documentation
-            </a>.
+              <v-icon>mdi-information-variant</v-icon>
+            </v-btn>
+          </template>
+          <p class="primary--text">
+            This tool aim to offer a
+            <strong class="secondary--text"
+              >refreshing and singular approach to share text</strong
+            >, code or even entire library, in an elegant way.<br /><br />
+            The
+            <strong><i class="secondary--text">stega card</i></strong> generated
+            is essentially a common <i>.png</i> image. <br />It can therefore be
+            viewed/uploaded anywhere.<br />
           </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
+        </v-tooltip>
+        <v-btn color="secondary" class="action-btn" large absolute bottom left @click="$router.push({path: '/import'})">
+          <img src="~/assets/img/import.svg" alt="Decode image" />
+          <span class="pa-3">Decode</span></v-btn
+        >
+        <v-btn color="primary" class="action-btn" large absolute bottom right @click="$router.push({path: '/create'})">
+          <span class="pa-3">Create</span>
+          <img src="~/assets/img/create-card.svg" alt="Create image" />
+        </v-btn>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
-export default {
-  components: {
-    Logo,
-    VuetifyLogo
-  }
-}
+export default {}
 </script>
+<style lang="scss" scoped>
+.welcome-image {
+  width: 90%;
+}
+.main-col {
+  max-width: 600px;
+}
+.about-tooltip {
+  font-size: 1.2em;
+  max-width: 500px;
+  padding: 15px;
+  box-shadow: 0 0 30px #613db6;
+}
+.about-tooltip p {
+  padding: 0;
+  margin: 0;
+  font-weight: 1.3em;
+}
+.action-btn {
+  font-size: 1.4em;
+}
+.action-btn img {
+  width: 30px;
+  display: block;
+}
+</style>
