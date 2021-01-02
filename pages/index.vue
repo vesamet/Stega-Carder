@@ -9,7 +9,15 @@
             >steganography</a
           >.<br />
         </p>
-        <img src="~/assets/img/deconstructed.svg" class="welcome-image" />
+        <div class="welcome-image-box">
+          <img
+            src="~/assets/img/deconstructed.svg"
+            class="welcome-image mb-12"
+          />
+          <img src="~/assets/img/card.png" class="card" />
+          <img src="~/assets/img/blank-card.png" class="blank-card" />
+          <img src="~/assets/img/blank-card.png" class="blank-card-two" />
+        </div>
         <v-tooltip left color="white" content-class="about-tooltip">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -36,13 +44,29 @@
             viewed/uploaded anywhere.<br />
           </p>
         </v-tooltip>
-        <v-btn color="secondary" class="action-btn" large absolute bottom left @click="$router.push({path: '/import'})">
-          <img src="~/assets/img/import.svg" alt="Decode image" />
+        <v-btn
+          color="secondary"
+          class="action-btn"
+          x-large
+          absolute
+          bottom
+          left
+          @click="$router.push({ path: '/decode' })"
+        >
+          <img src="~/assets/img/decode.svg" alt="Decode image" />
           <span class="pa-3">Decode</span></v-btn
         >
-        <v-btn color="primary" class="action-btn" large absolute bottom right @click="$router.push({path: '/create'})">
+        <v-btn
+          color="primary"
+          class="action-btn"
+          x-large
+          absolute
+          bottom
+          right
+          @click="$router.push({ path: '/create' })"
+        >
           <span class="pa-3">Create</span>
-          <img src="~/assets/img/create-card.svg" alt="Create image" />
+          <img src="~/assets/img/encode.svg" alt="Create image" />
         </v-btn>
       </v-card>
     </v-col>
@@ -54,7 +78,31 @@ export default {}
 </script>
 <style lang="scss" scoped>
 .welcome-image {
-  width: 90%;
+  width: 95%;
+}
+.welcome-image-box {
+  position: relative;
+}
+.card {
+  position: absolute;
+  left: 4%;
+  top: 110px;
+  width: 40%;
+  transform: rotate(-3deg);
+}
+.blank-card {
+  position: absolute;
+  right: 5px;
+  top: 170px;
+  width: 27%;
+  z-index: 2;
+}
+.blank-card-two {
+  position: absolute;
+  right: 0;
+  top: 190px;
+  width: 24%;
+  z-index: 1;
 }
 .main-col {
   max-width: 600px;

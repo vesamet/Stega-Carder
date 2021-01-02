@@ -15,17 +15,17 @@
         >
           <v-icon>mdi-home</v-icon></v-btn
         >
-        <Carder />
+        <Decoder />
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import Carder from '@/components/Carder.vue'
+import Decoder from '@/components/Decoder.vue'
 export default {
   components: {
-    Carder,
+    Decoder,
   },
 }
 </script>
