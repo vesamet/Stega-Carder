@@ -15,7 +15,7 @@
           <v-row>
             <v-col cols="12" md="6" class="pa-10">
               <v-row>
-                <v-col cols="9">
+                <v-col cols="10">
                   <v-text-field
                     v-model="title"
                     label="Title"
@@ -39,9 +39,9 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="9">
+                <v-col cols="12" md="10">
                   <v-row>
-                    <v-col>
+                    <v-col cols="12" md="6">
                       <v-text-field
                         dense
                         v-model="subtitle"
@@ -52,7 +52,7 @@
                         maxlength="21"
                       ></v-text-field
                     ></v-col>
-                    <v-col>
+                    <v-col cols="12" md="6">
                       <v-text-field
                         dense
                         v-model="author"
@@ -65,7 +65,7 @@
                     ></v-col>
                   </v-row>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="12" md="2">
                   <ColorPicker
                     :color="subtitleColor"
                     @update:color="
@@ -77,59 +77,85 @@
                   />
                 </v-col>
               </v-row>
-              <v-divider class="py-3"></v-divider>
-              <v-textarea
-                v-model="input"
-                outlined
-                dense
-                label="Text to encode"
-                @input="textIsEncoded = false"
-              ></v-textarea>
-              <div class="text-left">
-                <v-btn
-                  v-show="!textIsEncoded"
-                  color="primary"
-                  small
-                  @click="encode()"
-                >
-                  Encode text
-                </v-btn>
-                <v-btn color="secondary" small @click="decode()">
-                  Decode text
-                </v-btn>
-              </div>
-              <v-divider class="my-3"></v-divider>
 
               <v-row>
-                <v-col cols="12" md="6">
-                  <v-select
-                    v-model="cardType"
-                    :items="cardTypes"
-                    label="Stega card size"
-                    @input="render()"
-                    outlined
-                  ></v-select>
+                <v-col cols="10">
+                  <v-row>
+                    <v-col>
+                      <v-select
+                        v-model="cardType"
+                        :items="cardTypes"
+                        label="Stega card size"
+                        @input="render()"
+                        outlined
+                        dense
+                      ></v-select>
+                    </v-col>
+                    <v-col>
+                      <v-text-field
+                        dense
+                        type="number"
+                        v-model="number"
+                        label="Card number"
+                        @input="render()"
+                        outlined
+                        counter
+                        maxlength="10"
+                      ></v-text-field
+                    ></v-col>
+                  </v-row>
                 </v-col>
-                <v-col cols="12" md="6">
-                  <v-card outlined class="pa-3" style="border-color: #9e9e9e">
-                    <v-row justify="center" align="center">
-                      <v-col cols="12" md="8" class="pa-2"
-                        >Background color:</v-col
-                      >
-                      <v-col cols="12" md="4" class="pa-2">
-                        <ColorPicker
-                          :color="backgroundColor"
-                          @update:color="
-                            (c) => {
-                              backgroundColor = c
-                              render()
-                            }
-                          "
-                      /></v-col>
-                    </v-row>
-                  </v-card>
+                <v-col cols="2">
+                  <ColorPicker
+                    :color="backgroundColor"
+                    @update:color="
+                      (c) => {
+                        backgroundColor = c
+                        render()
+                      }
+                    "
+                  />
                 </v-col>
               </v-row>
+
+              <v-divider class="py-3"></v-divider>
+              <v-row>
+                <v-col cols="12" md="10">
+                  <v-textarea
+                    v-model="input"
+                    outlined
+                    dense
+                    label="Text to encode"
+                    @input="textIsEncoded = false"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12" md="2" align-self="center">
+                  <v-btn
+                    class="encode-btn mb-4 py-3 elevation-6"
+                    :style="textIsEncoded ? 'opacity:0.5;' : ''"
+                    color="primary"
+                    block
+                    @click="!textIsEncoded ? encode() : false"
+                  >
+                    <template v-if="!textIsEncoded">
+                      💾<br />
+                      Encode<br />
+                      text
+                    </template>
+                    <template v-else>
+                      ✔️<br />
+                      Text<br />
+                      encoded
+                    </template>
+                  </v-btn>
+                  <v-btn color="cancel" small block @click="render()">
+                    Clear
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-btn color="secondary" small @click="decode()">
+                Decode text
+              </v-btn>
             </v-col>
             <v-col cols="12" md="6" align-self="center">
               <canvas
@@ -170,14 +196,15 @@ export default {
       input: 'you 🧝',
       textIsEncoded: false,
       author: 'Nina Abramovic',
+      number: 194,
       // Cartridge specification
       cardType: 'small',
       cardTypes: [
         { text: 'Small', value: 'small' },
         { text: 'Medium', value: 'medium' },
-        { text: 'Large', value: 'large', disabled: true },
+        { text: 'Large', value: 'large' },
       ],
-      backgroundColor: '#DD2B00FF',
+      backgroundColor: '#5958C5FF',
       cardWidth: 300,
       cardHeight: 400,
       padding: 30,
@@ -189,12 +216,16 @@ export default {
       // Set cartridge size
       switch (this.cardType) {
         case 'small':
-          this.cardWidth = 300 + this.padding
-          this.cardHeight = 400 + this.padding
+          this.cardWidth = 350 + this.padding
+          this.cardHeight = 150 + this.padding
           break
         case 'medium':
-          this.cardWidth = 500 + this.padding
-          this.cardHeight = 600 + this.padding
+          this.cardWidth = 350 + this.padding
+          this.cardHeight = 250 + this.padding
+          break
+        case 'large':
+          this.cardWidth = 350 + this.padding
+          this.cardHeight = 350 + this.padding
           break
       }
       this.$nextTick(() => {
@@ -233,6 +264,7 @@ export default {
         )
 
         // Paint title, subtitle & author
+        ctx.textAlign = 'left'
         ctx.shadowBlur = 0
         ctx.font = 'bold 25px Courier New'
         ctx.fillStyle = this.titleColor
@@ -249,11 +281,43 @@ export default {
           this.padding + 50
         )
         ctx.font = 'bold 17px Courier New'
+        ctx.textAlign = 'right'
         ctx.fillText(
-          this.author,
+          '— ' + this.author,
+          this.cardWidth - this.padding - this.textOffset,
+          this.cardHeight - this.padding
+        )
+        // Add card number label
+        if (this.number) {
+          ctx.font = 'bold 12px Courier New'
+          ctx.fillText(
+            '#' + this.number,
+            this.cardWidth - this.padding - this.textOffset,
+            this.padding + 20
+          )
+        }
+        // Add Stega card label
+        ctx.font = 'bold 12px Courier New'
+        ctx.textAlign = 'left'
+        ctx.fillText(
+          'Stega Card',
           this.padding + this.textOffset,
           this.cardHeight - this.padding
         )
+
+        // Add no data label
+        let dataArea = this.clone(this.getDataAreaBounds())
+        ctx.fillStyle = this.subtitleColor
+        ctx.fillRect(
+          dataArea.start[0],
+          dataArea.start[1],
+          dataArea.width,
+          dataArea.height
+        )
+        ctx.font = 'bold 20px Courier New'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = this.titleColor
+        ctx.fillText('No Data', this.cardWidth / 2, this.cardHeight / 2 + 26)
       })
       // Set text as not encoded since we painted over the data area
       this.textIsEncoded = false
@@ -271,7 +335,7 @@ export default {
         let gradient = ctx.createLinearGradient(
           0,
           0,
-          dataArea.start[0] + dataArea.width,
+          dataArea.start[0] + dataArea.width + this.padding,
           0
         )
         gradient.addColorStop(0, this.titleColor)
@@ -308,7 +372,7 @@ export default {
           )
           index += 3
           pointer.x++
-          if (pointer.x + 1 === dataArea.end[0]) {
+          if (pointer.x === dataArea.end[0]) {
             pointer.x = dataArea.start[0]
             pointer.y++
           }
@@ -358,7 +422,7 @@ export default {
       })
     },
     getDataAreaBounds() {
-      let startHeight = 80
+      let startHeight = 70
       let endHeight = 30
       return {
         start: [this.padding + this.textOffset, this.padding + startHeight],
@@ -372,7 +436,11 @@ export default {
           this.textOffset -
           (this.padding + this.textOffset),
 
-        height: this.cardHeight - this.padding - endHeight - (this.padding + startHeight),
+        height:
+          this.cardHeight -
+          this.padding -
+          endHeight -
+          (this.padding + startHeight),
       }
     },
     clone(object) {
@@ -393,5 +461,8 @@ export default {
   margin: 30px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+}
+.encode-btn {
+  height: 100% !important;
 }
 </style>
