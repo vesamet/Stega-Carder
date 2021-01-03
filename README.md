@@ -6,7 +6,7 @@ The *"stega card"* is perceived as a common .png image. It can therefore be view
 
 This tool aim to offer a **refreshing and singular approach to share text**, code or even entire library, in an elegant way.
 
-**Play with the tool here: (https://vesamet.github.io/Stega-Carder/**
+**Play with the tool here: https://vesamet.github.io/Stega-Carder/**
 
 --------
 This mini-project is heavily inspired by the **[Pico-8](https://www.lexaloffle.com/pico-8.php) fantasy console** and it's way to store game data. It basically extend the idea to every data that can fit in UTF-16
