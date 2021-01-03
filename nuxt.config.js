@@ -20,7 +20,7 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    
+    'animate.css/animate.min.css'
   ],
   sass: {
   },

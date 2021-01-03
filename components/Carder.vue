@@ -1,183 +1,191 @@
 <template>
-    <v-card flat>
-      <v-row>
-        <v-col cols="12" md="6" class="pa-10">
-          <v-row>
-            <v-col cols="10" class="pa-1">
-              <v-text-field
-                v-model="title"
-                label="Title"
-                @input="render()"
-                outlined
-                dense
-                counter
-                maxlength="17"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="2" class="pa-2 pt-1">
-              <ColorPicker
-                :color="titleColor"
-                @update:color="
-                  (c) => {
-                    titleColor = c
-                    render()
-                  }
-                "
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="10" class="pa-2">
-              <v-row>
-                <v-col cols="12" md="6" class="pa-2">
-                  <v-text-field
-                    dense
-                    v-model="subtitle"
-                    label="Subtitle"
-                    @input="render()"
-                    outlined
-                    counter
-                    maxlength="21"
-                  ></v-text-field
-                ></v-col>
-                <v-col cols="12" md="6" class="pa-2">
-                  <v-text-field
-                    dense
-                    v-model="author"
-                    label="Author"
-                    @input="render()"
-                    outlined
-                    counter
-                    maxlength="19"
-                  ></v-text-field
-                ></v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12" md="2" class="pa-2 pt-1">
-              <ColorPicker
-                :color="subtitleColor"
-                @update:color="
-                  (c) => {
-                    subtitleColor = c
-                    render()
-                  }
-                "
-              />
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="10" class="pa-2">
-              <v-row>
-                <v-col class="pa-2">
-                  <v-select
-                    v-model="cardType"
-                    :items="cardTypes"
-                    label="Stega card size"
-                    @input="render()"
-                    outlined
-                    dense
-                  ></v-select>
-                </v-col>
-                <v-col class="pa-2">
-                  <v-text-field
-                    dense
-                    type="number"
-                    v-model="number"
-                    label="Card number"
-                    @input="render()"
-                    outlined
-                    counter
-                    maxlength="4"
-                  ></v-text-field
-                ></v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="2" class="pa-2 pt-1">
-              <ColorPicker
-                :color="backgroundColor"
-                @update:color="
-                  (c) => {
-                    backgroundColor = c
-                    render()
-                  }
-                "
-              />
-            </v-col>
-          </v-row>
-
-          <v-divider class="mt-2 mb-5"></v-divider>
-          <v-row>
-            <v-col cols="12" md="10" class="pa-2">
-              <v-textarea
-                v-model="input"
-                outlined
-                dense
-                label="Text to encode"
-                @input="textIsEncoded = false"
-              ></v-textarea>
-            </v-col>
-            <v-col cols="12" md="2" align-self="center" class="pa-2">
-              <v-btn
-                class="encode-btn mb-4 py-3 elevation-6"
-                :style="textIsEncoded ? 'opacity:0.5;' : ''"
-                color="primary"
-                block
-                @click="!textIsEncoded ? encode() : false"
-              >
-                <template v-if="!textIsEncoded">
-                  <br />
-                  Encode<br />
-                  text
-                </template>
-                <template v-else>
-                  Text<br />
-                  encoded
-                </template>
-              </v-btn>
-              <v-btn
-                color="cancel"
-                small
-                block
-                @click="
+  <v-card flat>
+    <v-row>
+      <v-col cols="12" md="6" class="px-10">
+        <h2 class="primary--text text-left mb-4 alt-font">Define cartridge</h2>
+        <v-row>
+          <v-col cols="10" class="pa-1">
+            <v-text-field
+              v-model="title"
+              label="Title"
+              @input="render()"
+              outlined
+              dense
+              counter
+              maxlength="17"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="2" class="pa-2 pt-1">
+            <ColorPicker
+              :color="titleColor"
+              @update:color="
+                (c) => {
+                  titleColor = c
                   render()
-                  input = ''
-                "
-              >
-                Clear
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-btn color="secondary" small @click="decode()"> Decode text </v-btn>
-        </v-col>
-        <v-col cols="12" md="6" align-self="center" class="pa-2">
-          <canvas
-            ref="card"
-            class="card"
-            :width="cardWidth"
-            :height="cardHeight"
-          ></canvas
-          ><br />
-          <v-btn color="cancel" @click="reset()" class="mx-3">
-            <v-icon class="mr-2">mdi-close</v-icon> Reset
-          </v-btn>
-          <a
-            v-if="$refs.card"
-            :download="`${title}-${subtitle}-${number}.png`"
-            :href="$refs.card.toDataURL('image/png')"
-          >
-            <v-btn color="secondary" class="mx-3">
-              Obtain card <v-icon class="ml-2">mdi-download-circle</v-icon>
+                }
+              "
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="10" class="pa-2">
+            <v-row>
+              <v-col cols="12" md="6" class="pa-2">
+                <v-text-field
+                  dense
+                  v-model="subtitle"
+                  label="Subtitle"
+                  @input="render()"
+                  outlined
+                  counter
+                  maxlength="21"
+                ></v-text-field
+              ></v-col>
+              <v-col cols="12" md="6" class="pa-2">
+                <v-text-field
+                  dense
+                  v-model="author"
+                  label="Author"
+                  @input="render()"
+                  outlined
+                  counter
+                  maxlength="19"
+                ></v-text-field
+              ></v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="2" class="pa-2 pt-1">
+            <ColorPicker
+              :color="subtitleColor"
+              @update:color="
+                (c) => {
+                  subtitleColor = c
+                  render()
+                }
+              "
+            />
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="10" class="pa-2">
+            <v-row>
+              <v-col class="pa-2">
+                <v-select
+                  v-model="cardType"
+                  :items="cardTypes"
+                  label="Stega card size"
+                  @input="render()"
+                  outlined
+                  dense
+                ></v-select>
+              </v-col>
+              <v-col class="pa-2">
+                <v-text-field
+                  dense
+                  type="number"
+                  v-model="number"
+                  label="Card number"
+                  @input="render()"
+                  outlined
+                  counter
+                  maxlength="4"
+                ></v-text-field
+              ></v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="2" class="pa-2 pt-1">
+            <ColorPicker
+              :color="backgroundColor"
+              @update:color="
+                (c) => {
+                  backgroundColor = c
+                  render()
+                }
+              "
+            />
+          </v-col>
+        </v-row>
+
+        <v-divider class="mt-2 mb-5"></v-divider>
+        <v-row>
+          <v-col cols="12" md="10" class="pa-2">
+            <v-textarea
+              v-model="input"
+              outlined
+              dense
+              label="Text to encode"
+              @input="textIsEncoded = false"
+            ></v-textarea>
+          </v-col>
+          <v-col cols="12" md="2" align-self="center" class="pa-2">
+            <v-btn
+              class="encode-btn mb-4 py-3 elevation-6"
+              :style="textIsEncoded ? 'opacity:0.5;' : ''"
+              color="primary"
+              block
+              @click="!textIsEncoded ? encode() : false"
+            >
+              <template v-if="!textIsEncoded">
+                <br />
+                Encode<br />
+                text
+              </template>
+              <template v-else>
+                Text<br />
+                encoded
+              </template>
             </v-btn>
-          </a>
-        </v-col>
-      </v-row>
-    </v-card>
+            <v-btn
+              color="cancel"
+              small
+              block
+              @click="
+                render()
+                animateCard = true
+                input = ''
+              "
+            >
+              Clear
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+        align-self="center"
+        class="pa-2"
+      >
+        <canvas
+          ref="card"
+          class="card"
+          :width="cardWidth"
+          :height="cardHeight"
+          :class="animateCard ? 'animate__animated animate__headShake' : ''"
+          @animationend="animateCard = false"
+        ></canvas
+        ><br />
+        <v-btn color="cancel" @click="reset()" class="mx-3">
+          <v-icon class="mr-2">mdi-close</v-icon> Reset
+        </v-btn>
+        <a
+          v-if="$refs.card"
+          :download="`${title}-${subtitle}-${number}.png`"
+          :href="$refs.card.toDataURL('image/png')"
+        >
+          <v-btn color="secondary" class="mx-3" @click="animateCard = true">
+            Obtain card <v-icon class="ml-2">mdi-download-circle</v-icon>
+          </v-btn>
+        </a>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
 import pako from 'pako'
-import card from '@/mixins/card';
+import card from '@/mixins/card'
 import ColorPicker from '@/components/ColorPicker.vue'
 export default {
   mixins: [card],
@@ -186,7 +194,7 @@ export default {
   },
   data() {
     return {
-      tab: 'create',
+      animateCard: false,
       // Form
       title: 'Nani Poems',
       titleColor: '#000000FF',
@@ -388,30 +396,7 @@ export default {
         }
         // Set text as encoded
         this.textIsEncoded = true
-      })
-    },
-    decode() {
-      this.$nextTick(() => {
-        let dataArea = this.clone(this.getDataAreaBounds())
-        const ctx = this.$refs.card.getContext('2d')
-        let dataArray = []
-        let abort = false
-        for (let y = dataArea.start[1]; y < dataArea.end[1]; y++) {
-          for (let x = dataArea.start[0]; x < dataArea.end[0]; x++) {
-            let pixel = ctx.getImageData(x, y, 1, 1).data
-            if (pixel[3] === 254) {
-              abort = true
-              break
-            }
-            dataArray.push(pixel[0])
-            dataArray.push(pixel[1])
-            dataArray.push(pixel[2])
-          }
-          if (abort === true) {
-            break
-          }
-        }
-        console.log(dataArray)
+        this.animateCard = true
       })
     },
     reset() {
@@ -427,6 +412,7 @@ export default {
       this.titleColor = '#0F2274FF'
       this.$nextTick(() => {
         this.render()
+        this.animateCard = true
       })
     },
   },

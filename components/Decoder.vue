@@ -2,7 +2,7 @@
   <div>
     <v-row justify="center">
       <v-col cols="12" md="6">
-        <h2 class="primary--text">Upload a card</h2>
+        <h2 class="primary--text alt-font">Upload a card</h2>
         <v-form ref="form" v-model="valid">
           <v-file-input
             v-model="file"
@@ -18,6 +18,7 @@
           ref="card"
           v-show="file"
           class="card"
+          :class="decoded ? 'animate__animated animate__headShake':''"
           :width="cardWidth"
           :height="cardHeight"
         ></canvas
@@ -31,7 +32,7 @@
         >
       </v-col>
       <v-col cols="12" md="6">
-        <h2 class="primary--text">Decoded text</h2>
+        <h2 class="primary--text alt-font">Decoded text</h2>
         <v-textarea
           v-if="output"
           v-model="output"
