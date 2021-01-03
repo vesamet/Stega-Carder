@@ -1,7 +1,7 @@
 # Stega Carder
 
 Hi there!
-**Stega Carder** is a tool to encode any text into an cartridge-like image using [steganography](https://en.wikipedia.org/wiki/Steganography).
+**Stega Carder** is a tool to encode any text into a cartridge-like image using [steganography](https://en.wikipedia.org/wiki/Steganography).
 The *"stega card"* is perceived as a common .png image. It can therefore be viewed/uploaded anywhere.
 
 This tool aim to offer a **refreshing and singular approach to share text**, code or even entire library, in an elegant way.
