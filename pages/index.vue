@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col class="main-col text-center">
-      <v-card class="py-6 px-9 animate__animated animate__headShake">
+      <v-card class="py-6 px-9">
         <h1 class="main-title">Stega Carder</h1>
         <p>
           A tool to encode any text into an cartridge-like image using
