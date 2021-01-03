@@ -1,34 +1,69 @@
 <template>
   <div>
-    <v-row align="center" justify="center">
+    <v-row justify="center">
       <v-col cols="12" md="6">
         <h2 class="primary--text">Upload a card</h2>
-        <v-file-input
-        v-model="file"
-          show-size
-          :rules="rules"
-          truncate-length="15"
-          prepend-icon="mdi-card-bulleted-settings"
-          label="Stega card to decode"
-          accept="image/png"
-        ></v-file-input>
+        <v-form ref="form" v-model="valid">
+          <v-file-input
+            v-model="file"
+            show-size
+            :rules="rules"
+            prepend-icon="mdi-card-bulleted-settings"
+            label="Stega card to decode"
+            accept="image/png"
+            :truncate-length="44"
+          ></v-file-input>
+        </v-form>
+        <canvas
+          ref="card"
+          v-show="file"
+          class="card"
+          :width="cardWidth"
+          :height="cardHeight"
+        ></canvas
+        ><br />
+        <v-btn
+          v-if="!decoded"
+          color="primary"
+          :disabled="!file || !valid"
+          @click="loadImage()"
+          >Decode</v-btn
+        >
       </v-col>
-      <v-col cols="12" md="6"></v-col>
+      <v-col cols="12" md="6">
+        <h2 class="primary--text">Decoded text</h2>
+        <v-textarea
+          v-if="output"
+          v-model="output"
+          outlined
+          dense
+          label="Decoded text"
+          class="mt-5"
+          :rows="10"
+        ></v-textarea>
+                <h3 v-else class="secondary--text mt-4">Upload a card to see it's content.</h3>
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import card from '@/mixins/card'
+import pako from 'pako'
 export default {
+  mixins: [card],
   data() {
     return {
+      valid: false,
       file: null,
       rules: [
         (value) =>
           !value ||
-          value.type === "image/png" ||
+          value.type === 'image/png' ||
           `Error: the file should be a .png image.`,
       ],
+      output: '',
+      decoded: false,
     }
   },
   methods: {
@@ -36,11 +71,27 @@ export default {
       console.log(e.type)
     },
     loadImage() {
-      let card = new Image()
-      card.src = 'img/base.png'
-      card.onload = function () {
-        context.drawImage(card, 0, 0)
-      }
+      this.$nextTick(() => {
+        let file = this.file
+        let fr = new FileReader()
+        let createImage = () => {
+          let img = new Image()
+          let imageLoaded = () => {
+            let ctx = this.$refs.card.getContext('2d')
+            this.cardWidth = img.width
+            this.cardHeight = img.height
+            this.$nextTick(() => {
+              ctx.drawImage(img, 0, 0)
+              this.decode()
+              this.decoded = true
+            })
+          }
+          img.onload = imageLoaded
+          img.src = fr.result
+        }
+        fr.onload = createImage // onload fires after reading is complete
+        fr.readAsDataURL(file)
+      })
     },
     decode() {
       this.$nextTick(() => {
@@ -48,12 +99,6 @@ export default {
         const ctx = this.$refs.card.getContext('2d')
         let dataArray = []
         let abort = false
-        console.log(
-          ctx.getImageData(dataArea.start[0] + 5, dataArea.start[1], 1, 1)
-        )
-        console.log(
-          ctx.getImageData(dataArea.start[0] + 4, dataArea.start[1], 1, 1)
-        )
         for (let y = dataArea.start[1]; y < dataArea.end[1]; y++) {
           for (let x = dataArea.start[0]; x < dataArea.end[0]; x++) {
             let pixel = ctx.getImageData(x, y, 1, 1).data
@@ -69,9 +114,16 @@ export default {
             break
           }
         }
-        console.log(dataArray)
-        console.log(pako.inflate(new Uint8Array(dataArray), { to: 'string' }))
+        this.output = pako.inflate(new Uint8Array(dataArray), { to: 'string' })
       })
+    },
+  },
+  watch: {
+    file(value) {
+      this.decoded = false
+      this.output = ''
+      this.cardWidth = 0
+      this.cardHeight = 0
     },
   },
 }

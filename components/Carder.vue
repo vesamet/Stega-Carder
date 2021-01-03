@@ -177,8 +177,10 @@
 
 <script>
 import pako from 'pako'
+import card from '@/mixins/card';
 import ColorPicker from '@/components/ColorPicker.vue'
 export default {
+  mixins: [card],
   components: {
     ColorPicker,
   },
@@ -190,13 +192,14 @@ export default {
       titleColor: '#000000FF',
       subtitle: 'Feed Scavenger',
       subtitleColor: '#AAFDFFFF',
-      //       input: `The little red birds have all flown away 🐦
-      // The tapestry of threads of conversation 🧵
-      // Dusty and rolled up in a corner 🧹
-      // The photos lie scattered on the floor 🖼️
-      // The algorithms still remember 🖥️
-      // And still remind me of you 🧝`,
-      input: 'you 🧝',
+      input: `
+      The little red birds have all flown away 🐦
+      The tapestry of threads of conversation 🧵
+      Dusty and rolled up in a corner 🧹
+      The photos lie scattered on the floor 🖼️
+      The algorithms still remember 🖥️
+      And still remind me of you 🧝
+      `,
       textIsEncoded: false,
       author: 'Nina Abramovic',
       number: 194,
@@ -208,10 +211,6 @@ export default {
         { text: 'Large', value: 'large' },
       ],
       backgroundColor: '#5958C5FF',
-      cardWidth: 300,
-      cardHeight: 400,
-      padding: 30,
-      textOffset: 10,
     }
   },
   methods: {
@@ -333,7 +332,6 @@ export default {
         const compressed = pako.deflate(this.input)
         // Clear & style data area
         let dataArea = this.clone(this.getDataAreaBounds())
-        console.log(compressed)
         let gradient = ctx.createLinearGradient(
           0,
           0,
@@ -398,12 +396,6 @@ export default {
         const ctx = this.$refs.card.getContext('2d')
         let dataArray = []
         let abort = false
-        console.log(
-          ctx.getImageData(dataArea.start[0] + 5, dataArea.start[1], 1, 1)
-        )
-        console.log(
-          ctx.getImageData(dataArea.start[0] + 4, dataArea.start[1], 1, 1)
-        )
         for (let y = dataArea.start[1]; y < dataArea.end[1]; y++) {
           for (let x = dataArea.start[0]; x < dataArea.end[0]; x++) {
             let pixel = ctx.getImageData(x, y, 1, 1).data
@@ -420,33 +412,7 @@ export default {
           }
         }
         console.log(dataArray)
-        console.log(pako.inflate(new Uint8Array(dataArray), { to: 'string' }))
       })
-    },
-    getDataAreaBounds() {
-      let startHeight = 70
-      let endHeight = 30
-      return {
-        start: [this.padding + this.textOffset, this.padding + startHeight],
-        end: [
-          this.cardWidth - this.padding - this.textOffset,
-          this.cardHeight - this.padding - endHeight,
-        ],
-        width:
-          this.cardWidth -
-          this.padding -
-          this.textOffset -
-          (this.padding + this.textOffset),
-
-        height:
-          this.cardHeight -
-          this.padding -
-          endHeight -
-          (this.padding + startHeight),
-      }
-    },
-    clone(object) {
-      return JSON.parse(JSON.stringify(object))
     },
     reset() {
       this.cardType = 'small'
@@ -463,15 +429,6 @@ export default {
         this.render()
       })
     },
-    download() {
-      let download = document.getElementById('download')
-      let image = document
-        .getElementById('myCanvas')
-        .toDataURL('image/png')
-        .replace('image/png', 'image/octet-stream')
-      download.setAttribute('href', image)
-      //download.setAttribute("download","archive.png");
-    },
   },
   mounted() {
     this.encode()
@@ -484,8 +441,6 @@ export default {
   margin: auto;
   text-align: center;
   margin: 30px;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 .encode-btn {
   height: 100% !important;
