@@ -1,4 +1,5 @@
 # Stega Carder
+![Stega card example](./assets/img/card.png)
 
 Hi there!
 **Stega Carder** is a tool to encode any text into a cartridge-like image using [steganography](https://en.wikipedia.org/wiki/Steganography).
