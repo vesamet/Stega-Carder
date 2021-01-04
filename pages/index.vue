@@ -4,7 +4,7 @@
       <v-card class="py-6 px-9">
         <h1 class="main-title">Stega Carder</h1>
         <p>
-          A tool to encode any text into an cartridge-like image using
+          A tool to encode any text into a cartridge-like image using
           <a href="https://en.wikipedia.org/wiki/Steganography" rel="noopener"
             >steganography</a
           >.<br />
