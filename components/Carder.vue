@@ -210,6 +210,22 @@
             </v-btn>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" md="10" class="pa-1">
+            <v-text-field
+              dense
+              v-model="secret"
+              label="Encryption password (optional)"
+              @input="render()"
+              outlined
+              prepend-icon="mdi-key"
+              persistent-hint
+              placeholder="Leave empty for no encryption."
+              hint="Military-grade AES encryption. 
+              Your recipient will need this password to read the card if you set one. Note that encryption can take up to 40 times more space."
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" md="6" align-self="center" class="pa-2">
         <div class="card-box">
@@ -246,6 +262,7 @@
 
 <script>
 import pako from 'pako'
+import crypto from 'crypto-js/aes'
 import card from '@/mixins/card'
 import ColorPicker from '@/components/ColorPicker.vue'
 export default {
@@ -272,12 +289,15 @@ export default {
       textIsEncoded: false,
       author: 'Nina Abramovic',
       number: 194,
+      secret: '',
       // Cartridge specification
       cardType: 'small',
       cardTypes: [
-        { text: 'Small', value: 'small' },
-        { text: 'Medium', value: 'medium' },
+        { text: 'Nano', value: 'small' },
+        { text: 'Standard', value: 'medium' },
         { text: 'Large', value: 'large' },
+        { text: 'Mega', value: 'xlarge' },
+        { text: 'Giga', value: 'xxlarge' },
       ],
       backgroundColor: '#5958C5FF',
     }
@@ -285,18 +305,22 @@ export default {
   methods: {
     render() {
       // Set cartridge size
+      this.cardWidth = 350 + this.padding
       switch (this.cardType) {
         case 'small':
-          this.cardWidth = 350 + this.padding
           this.cardHeight = 150 + this.padding
           break
         case 'medium':
-          this.cardWidth = 350 + this.padding
           this.cardHeight = 250 + this.padding
           break
         case 'large':
-          this.cardWidth = 350 + this.padding
           this.cardHeight = 350 + this.padding
+          break
+        case 'xlarge':
+          this.cardHeight = 550 + this.padding
+          break
+        case 'xxlarge':
+          this.cardHeight = 850 + this.padding
           break
       }
       this.$nextTick(() => {
@@ -388,6 +412,12 @@ export default {
         ctx.textAlign = 'center'
         ctx.fillStyle = this.backgroundColor
         ctx.fillText('No Data', this.cardWidth / 2, this.cardHeight / 2 + 26)
+        // Set special pixel to inform the decoder that there is no data
+        ctx.putImageData(
+          new ImageData(new Uint8ClampedArray([0, 0, 0, 254]), 1, 1),
+          dataArea.start[0],
+          dataArea.start[1]
+        )
       })
       // Set text as not encoded since we painted over the data area
       this.textIsEncoded = false
@@ -398,7 +428,10 @@ export default {
       this.$nextTick(() => {
         const ctx = this.$refs.card.getContext('2d')
         // Compress text in 8-bit unsigned integer array (Uint8Array)
-        const compressed = pako.deflate(this.input)
+        let textData = this.secret
+          ? crypto.encrypt(this.input, this.secret).toString()
+          : this.input
+        const compressed = pako.deflate(textData)
         // Clear & style data area
         let dataArea = this.clone(this.getDataAreaBounds())
         let gradient = ctx.createLinearGradient(
@@ -447,8 +480,9 @@ export default {
           }
           if (index >= compressed.length) {
             //add special pixel to signal the end of the data
+            let endNumber = this.secret ? 253 : 254
             ctx.putImageData(
-              new ImageData(new Uint8ClampedArray([0, 0, 0, 254]), 1, 1),
+              new ImageData(new Uint8ClampedArray([0, 0, 0, endNumber]), 1, 1),
               pointer.x,
               pointer.y
             )
