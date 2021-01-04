@@ -1,5 +1,5 @@
 <template>
-    <div class="vignette">
+    <div class="vignette secondary">
     </div>
 </template>
 

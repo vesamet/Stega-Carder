@@ -4,7 +4,7 @@
       <v-col cols="12" md="6" class="px-10">
         <h2 class="primary--text text-left mb-4 alt-font">Define cartridge</h2>
         <v-row>
-          <v-col cols="10" class="pa-1">
+          <v-col cols="12" md="10" class="pa-1">
             <v-text-field
               v-model="title"
               label="Title"
@@ -15,7 +15,7 @@
               maxlength="17"
             ></v-text-field>
           </v-col>
-          <v-col cols="2" class="pa-2 pt-1">
+          <v-col cols="2" class="pa-2 pt-1 d-none d-md-flex">
             <ColorPicker
               :color="titleColor"
               @update:color="
@@ -54,7 +54,7 @@
               ></v-col>
             </v-row>
           </v-col>
-          <v-col cols="12" md="2" class="pa-2 pt-1">
+          <v-col cols="12" md="2" class="pa-2 pt-1 d-none d-md-flex">
             <ColorPicker
               :color="subtitleColor"
               @update:color="
@@ -68,7 +68,7 @@
         </v-row>
 
         <v-row>
-          <v-col cols="10" class="pa-2">
+          <v-col cols="12" md="10" class="pa-2">
             <v-row>
               <v-col class="pa-2">
                 <v-select
@@ -94,7 +94,7 @@
               ></v-col>
             </v-row>
           </v-col>
-          <v-col cols="2" class="pa-2 pt-1">
+          <v-col cols="2" class="pa-2 pt-1 d-none d-md-flex">
             <ColorPicker
               :color="backgroundColor"
               @update:color="
@@ -106,10 +106,70 @@
             />
           </v-col>
         </v-row>
-
+        <v-row class="d-md-none d-lg-none d-xl-none px-0 text-left">
+          <v-col cols="12" class="pa-1">
+            <v-card class="px-3 py-2 mb-3 outlined-card" outlined>
+              <v-row class="pa-0">
+                <v-col class="text-left">
+                  <p class="pb-0 mb-0 pt-2">Title :</p></v-col
+                >
+                <v-col class="text-right mr-2">
+                  <ColorPicker
+                    :color="titleColor"
+                    @update:color="
+                      (c) => {
+                        titleColor = c
+                        render()
+                      }
+                    "
+                /></v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12" class="pa-1">
+            <v-card class="px-3 py-2 mb-3 outlined-card" outlined>
+              <v-row class="pa-0">
+                <v-col class="text-left">
+                  <p class="pb-0 mb-0 pt-2">Subtitle :</p></v-col
+                >
+                <v-col class="text-right mr-2">
+                  <ColorPicker
+                    :color="subtitleColor"
+                    @update:color="
+                      (c) => {
+                        subtitleColor = c
+                        render()
+                      }
+                    "
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12" class="pa-1">
+            <v-card class="px-3 py-2 mb-3 outlined-card" outlined>
+              <v-row class="pa-0">
+                <v-col class="text-left">
+                  <p class="pb-0 mb-0 pt-2">Background :</p></v-col
+                >
+                <v-col class="text-right mr-2">
+                  <ColorPicker
+                    :color="backgroundColor"
+                    @update:color="
+                      (c) => {
+                        backgroundColor = c
+                        render()
+                      }
+                    "
+                  />
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
         <v-divider class="mt-2 mb-5"></v-divider>
         <v-row>
-          <v-col cols="12" md="10" class="pa-2">
+          <v-col cols="12" md="10" class="pa-1">
             <v-textarea
               v-model="input"
               outlined
@@ -151,30 +211,31 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-        align-self="center"
-        class="pa-2"
-      >
-        <canvas
-          ref="card"
-          class="card"
-          :width="cardWidth"
-          :height="cardHeight"
-          :class="animateCard ? 'animate__animated animate__headShake' : ''"
-          @animationend="animateCard = false"
-        ></canvas
-        ><br />
+      <v-col cols="12" md="6" align-self="center" class="pa-2">
+        <div class="card-box">
+          <canvas
+            ref="card"
+            class="card"
+            :width="cardWidth"
+            :height="cardHeight"
+            :class="animateCard ? 'animate__animated animate__headShake' : ''"
+            @animationend="animateCard = false"
+          ></canvas>
+        </div>
+        <br />
         <v-btn color="cancel" @click="reset()" class="mx-3">
-          <v-icon class="mr-2">mdi-close</v-icon> Reset
+          <v-icon class="mr-2 mt-1">mdi-close</v-icon> Reset
         </v-btn>
         <a
           v-if="$refs.card"
           :download="`${title}-${subtitle}-${number}.png`"
           :href="$refs.card.toDataURL('image/png')"
         >
-          <v-btn color="secondary" class="mx-3" @click="animateCard = true">
+          <v-btn
+            color="secondary"
+            class="mx-3 mt-1"
+            @click="animateCard = true"
+          >
             Obtain card <v-icon class="ml-2">mdi-download-circle</v-icon>
           </v-btn>
         </a>
@@ -423,6 +484,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-box {
+  overflow: auto;
+  position: relative;
+  text-align: center;
+  margin: auto;
+}
 .card {
   margin: auto;
   text-align: center;
@@ -430,5 +497,8 @@ export default {
 }
 .encode-btn {
   height: 100% !important;
+}
+.outlined-card {
+  border: 1px solid #9e9e9e;
 }
 </style>

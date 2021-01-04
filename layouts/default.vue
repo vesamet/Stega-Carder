@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="secondary" fill-height fluid>
+      <v-container fill-height fluid>
         <Vignette />
         <transition name="fade" mode="out-in">
           <nuxt />
@@ -11,12 +11,20 @@
             <a
               href="https://github.com/vesamet/Stega-Carder"
               target="_blank"
-              class="creator-link"
+              class="creator-link d-none d-lg-inline-block d-xl-none"
+              >Made by Gwenaël Guyot</a
+            >
+                        <a
+              href="https://github.com/vesamet/Stega-Carder"
+              target="_blank"
+              class="creator-link dark d-lg-none d-xl-inline-block"
               >Made by Gwenaël Guyot</a
             >
             <a href="https://github.com/vesamet/Stega-Carder" target="_blank"
               ><button>
-                <img src="@/assets/img/github.svg" alt="github" /></button
+                <img src="@/assets/img/github.svg" alt="github" class="d-none d-lg-inline-block d-xl-none" />
+                <img src="@/assets/img/github-dark.svg" alt="github" class="d-lg-none d-xl-inline-block" />
+                </button
             ></a>
           </p>
         </div>
@@ -63,7 +71,7 @@ html {
 }
 /* Footer*/
 .footer {
-  position: absolute;
+  position: fixed;
   right: 5px;
   bottom:  6px;
   pointer-events: all;
@@ -84,6 +92,10 @@ a.creator-link {
 }
 a::visited {
   color: white;
+}
+a.creator-link.dark {
+  color: rgb(57, 29, 158) !important;
+    text-shadow: 0px 0px 0px rgb(57, 29, 158);
 }
 
 /*Fonts */

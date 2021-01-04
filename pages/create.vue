@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col class="main-col text-center">
-      <v-card class="py-6 px-9">
+      <v-card class="py-6 px-9 mt-3">
         <h1 class="main-title">Stega Carder</h1>
         <v-divider class="py-3"></v-divider>
         <v-btn

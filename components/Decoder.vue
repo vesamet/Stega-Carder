@@ -14,15 +14,17 @@
             :truncate-length="44"
           ></v-file-input>
         </v-form>
-        <canvas
-          ref="card"
-          v-show="file"
-          class="card"
-          :class="decoded ? 'animate__animated animate__headShake':''"
-          :width="cardWidth"
-          :height="cardHeight"
-        ></canvas
-        ><br />
+        <div class="card-box">
+          <canvas
+            ref="card"
+            v-show="file"
+            class="card"
+            :class="decoded ? 'animate__animated animate__headShake' : ''"
+            :width="cardWidth"
+            :height="cardHeight"
+          ></canvas>
+        </div>
+        <br />
         <v-btn
           v-if="!decoded"
           color="primary"
@@ -42,7 +44,9 @@
           class="mt-5"
           :rows="10"
         ></v-textarea>
-                <h3 v-else class="secondary--text mt-4">Upload a card to see it's content.</h3>
+        <h3 v-else class="secondary--text mt-4">
+          Upload a card to see it's content.
+        </h3>
       </v-col>
     </v-row>
   </div>
@@ -130,4 +134,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card-box {
+  overflow: auto;
+  position: relative;
+  text-align: center;
+  margin: auto;
+}
+</style>
