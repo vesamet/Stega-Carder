@@ -10,7 +10,8 @@ This tool aim to offer a **refreshing and singular approach to share text**, cod
 **Play with the tool here: https://vesamet.github.io/Stega-Carder/**
 
 --------
-This mini-project is heavily inspired by the **[Pico-8](https://www.lexaloffle.com/pico-8.php) fantasy console** and it's way to store game data. It basically extend the idea to every data that can fit in UTF-16
+This mini-project is heavily inspired by the **[Pico-8](https://www.lexaloffle.com/pico-8.php) fantasy console** and it's way to store game data. It basically extend the idea to store more than just ascii characters.
+
 
 You can read more about it [here](https://pico-8.fandom.com/wiki/P8PNGFileFormat).
 
